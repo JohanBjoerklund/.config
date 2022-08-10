@@ -45,7 +45,7 @@ nmap('<leader>ev', ':vsplit $MYVIMRC<CR>')
 ----------------------------------------------------------------------------}}}
 
 -- GUI ---------------------------------------------------------------------{{{
-set.completeopt = 'longest,menuone,preview'
+set.completeopt = 'longest,menuone'
 set.termguicolors = true
 set.relativenumber = true
 set.number = true
