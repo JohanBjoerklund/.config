@@ -1,5 +1,4 @@
 require('plugins')
-
 -- Helpers -----------------------------------------------------------------{{{
 
 local set = vim.opt
@@ -173,6 +172,18 @@ require('lspconfig').efm.setup({
   end
 })
 
+require('lspconfig').svelte.setup({
+  on_attach = on_attach,
+})
+
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    signs = true,
+    virtual_text = false,
+    underline = true
+  })
+
+vim.opt.updatetime = 2000
 ----------------------------------------------------------------------------}}}
 
 -- Vimspector --------------------------------------------------------------{{{
@@ -189,6 +200,72 @@ nmap('<leader>dsi', '<Plug>VimspectorStepInto')
 nmap('<leader>dso', '<Plug>VimspectorStepOver')
 nmap('<leader>di', '<Plug>VimspectorBalloonEval')
 xmap('<leader>di', '<Plug>VimspectorBalloonEval')
+
+----------------------------------------------------------------------------}}}
+
+-- Telescope ---------------------------------------------------------------{{{
+
+require('telescope').setup({
+  pickers = {
+    find_files = {
+      theme = 'dropdown'
+    },
+    lsp_references = {
+      theme = 'dropdown'
+    },
+    buffers = {
+      theme = 'dropdown'
+    },
+    grep_string = {
+      theme = 'get_cursor'
+    }
+  }
+})
+
+nmap('<leader>f', ':lua require("telescope.builtin").find_files()<CR>')
+nmap('<leader>fg', ':lua require("telescope.builtin").live_grep()<CR>')
+-- nmap('<leader>fg', ':lua require("telescope.builtin").grep_string()<CR>')
+nmap('<leader>fb', ':lua require("telescope.builtin").buffers()<CR>')
+nmap('<leader>fh', ':lua require("telescope.builtin").help_tags()<CR>')
+
+----------------------------------------------------------------------------}}}
+
+-- Lualine -----------------------------------------------------------------{{{
+
+require('lualine').setup({
+  options = {
+    theme = 'gruvbox'
+  },
+  sections = {
+    lualine_a = {},
+    lualine_b = { 
+      'branch',
+      'diff',
+      { 
+        'diagnostics',
+        enable_icons = false,
+        symbols = { 
+          error = '✘',
+          warn = '✘',
+          info = '‼',
+          hint = '‼',
+        }
+      } 
+    },
+    lualine_c = { 'filename' },
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = { 'winnr' }
+  },
+  inactive_sections = {
+    lualine_a = { 'filename' },
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = { 'winnr' }
+  }
+})
 
 ----------------------------------------------------------------------------}}}
 
@@ -222,12 +299,60 @@ autocmd('FileType', {
 augroup('csharp', { clear = true })
 autocmd('FileType', {
   group = 'csharp',
-  pattern =  'cs',
+  pattern = 'cs',
   callback = function(opts)
     setlocal.tabstop = 4
     setlocal.softtabstop = 4
     setlocal.shiftwidth = 4
   end
 })
+
+----------------------------------------------------------------------------}}}
+
+-- MD ----------------------------------------------------------------------{{{
+
+augroup('md', { clear = true })
+autocmd('BufEnter', {
+  group = 'md',
+  pattern = { '*.md', '*.markdown' },
+  command = ':Goyo'
+})
+autocmd('BufLeave', {
+  group = 'md',
+  pattern = { '*.md', '*.markdown' },
+  command = ':Goyo!'
+})
+autocmd('User', {
+  pattern = 'GoyoEnter',
+  group = 'md',
+  command = ':Limelight'
+})
+autocmd('User', {
+  pattern = 'GoyoLeave',
+  group = 'md',
+  command = ':Limelight!'
+})
+
+----------------------------------------------------------------------------}}}
+
+-- Cursor ------------------------------------------------------------------{{{
+
+-- vim.cmd [[set gcr=a:block]]
+-- vim.cmd [[set gcr+=o:hor50-Cursor]]
+-- vim.cmd [[set gcr+=n:Cursor]]
+-- vim.cmd [[set gcr+=i-ci-sm:InsertCursor]]
+-- vim.cmd [[set gcr+=r-cr:ReplaceCursor-hor20]]
+-- vim.cmd [[set gcr+=c:CommandCursor]]
+-- vim.cmd [[set gcr+=v-ve:VisualCursor]]
+-- vim.cmd [[set gcr+=a:blinknon0]]
+
+-- vim.cmd [[hi TermCursor ctermfg=03 ctermbg=07 guibg=#458588 guifg=#ebdbb2]]
+-- vim.cmd [[hi Cursor ctermfg=03 ctermbg=07 guibg=#458588 guifg=#ebdbb2]]
+-- vim.cmd [[hi iCursor ctermfg=15 ctermbg=04 guibg=#458588 guifg=#ebdbb2]]
+-- vim.cmd [[hi InsertCursor ctermfg=15 ctermbg=04 guibg=#458588 guifg=#ebdbb2]]
+-- vim.cmd [[hi vCursor ctermfg=15 ctermbg=16]]
+-- vim.cmd [[hi VisualCursor ctermfg=15 ctermbg=16]]
+-- vim.cmd [[hi CursorIM ctermfg=15 ctermbg=04]]
+-- vim.cmd [[hi lCursor ctermfg=15 ctermbg=04]]
 
 ----------------------------------------------------------------------------}}}

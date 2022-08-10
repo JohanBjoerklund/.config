@@ -13,7 +13,10 @@ return require('packer').startup(function()
   use 'tpope/vim-surround'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-vinegar'
+  use 'junegunn/goyo.vim'
+  use 'junegunn/limelight.vim'
   use 'ellisonleao/gruvbox.nvim' 
+  use 'nvim-lualine/lualine.nvim'
 
   use {
     'williamboman/nvim-lsp-installer',
@@ -41,4 +44,6 @@ return require('packer').startup(function()
     'iamcco/markdown-preview.nvim',
     run = function() vim.fn['mkdp#util#install']() end,
   })
+
+  use 'leafOfTree/vim-svelte-plugin'
 end)

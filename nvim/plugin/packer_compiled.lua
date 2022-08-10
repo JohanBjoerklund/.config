@@ -80,10 +80,25 @@ _G.packer_plugins = {
     path = "/home/johanbjorklund/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
   },
+  ["goyo.vim"] = {
+    loaded = true,
+    path = "/home/johanbjorklund/.local/share/nvim/site/pack/packer/start/goyo.vim",
+    url = "https://github.com/junegunn/goyo.vim"
+  },
   ["gruvbox.nvim"] = {
     loaded = true,
     path = "/home/johanbjorklund/.local/share/nvim/site/pack/packer/start/gruvbox.nvim",
     url = "https://github.com/ellisonleao/gruvbox.nvim"
+  },
+  ["limelight.vim"] = {
+    loaded = true,
+    path = "/home/johanbjorklund/.local/share/nvim/site/pack/packer/start/limelight.vim",
+    url = "https://github.com/junegunn/limelight.vim"
+  },
+  ["lualine.nvim"] = {
+    loaded = true,
+    path = "/home/johanbjorklund/.local/share/nvim/site/pack/packer/start/lualine.nvim",
+    url = "https://github.com/nvim-lualine/lualine.nvim"
   },
   ["markdown-preview.nvim"] = {
     loaded = true,
@@ -129,6 +144,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/johanbjorklund/.local/share/nvim/site/pack/packer/start/vim-surround",
     url = "https://github.com/tpope/vim-surround"
+  },
+  ["vim-svelte-plugin"] = {
+    loaded = true,
+    path = "/home/johanbjorklund/.local/share/nvim/site/pack/packer/start/vim-svelte-plugin",
+    url = "https://github.com/leafOfTree/vim-svelte-plugin"
   },
   ["vim-vinegar"] = {
     loaded = true,
