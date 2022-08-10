@@ -38,7 +38,6 @@ end
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
-nmap('<C-P>', ':lua require("telescope.builtin").find_files()<CR>')
 nmap('<BS>', '<C-^>')
 nmap('<ESC>', ':noh<CR>')
 nmap('<leader>ev', ':vsplit $MYVIMRC<CR>')
@@ -46,7 +45,7 @@ nmap('<leader>ev', ':vsplit $MYVIMRC<CR>')
 ----------------------------------------------------------------------------}}}
 
 -- GUI ---------------------------------------------------------------------{{{
-
+set.completeopt = 'longest,menuone,preview'
 set.termguicolors = true
 set.relativenumber = true
 set.number = true
@@ -98,22 +97,32 @@ end
 
 -- LSP ---------------------------------------------------------------------{{{
 
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { noremap=true, silent=true })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { noremap=true, silent=true })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap=true, silent=true })
+
 local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  local opts = { noremap = true, silent = true }
-  buf_set_keymap('n', '<leader>gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', '<leader>tt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<leader><space>', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<leader>fu', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', 'gc', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  local opts = { noremap = true, silent = true, buffer=bufnr }
+  vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, opts)
+  vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, opts)
+  vim.keymap.set('n', '<leader>td', vim.lsp.buf.type_definition, opts)
+  vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, opts)
+  vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, opts)
+  vim.keymap.set('n', '<leader><C-K>', vim.lsp.buf.signature_help, opts)
+  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+  vim.keymap.set('n', '<leader>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, opts)
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+  vim.keymap.set('n', '<leader><space>', vim.lsp.buf.code_action, opts)
+  vim.keymap.set('n', '<leader>fu', '<cmd>lua require("telescope.builtin").lsp_references()<CR>', opts)
 end
-
+vim.cmd [[autocmd! ColorScheme * highlight NormalFloat guibg=#1f2335]]
+vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
 
 local eslint = {
   lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
@@ -279,6 +288,7 @@ do
 end
 
 ----------------------------------------------------------------------------}}}
+
 
 -- HTML --------------------------------------------------------------------{{{
 
