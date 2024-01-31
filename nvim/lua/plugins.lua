@@ -17,11 +17,40 @@ return require('packer').startup(function()
   use 'junegunn/limelight.vim'
   use 'ellisonleao/gruvbox.nvim' 
   use 'nvim-lualine/lualine.nvim'
+  use 'hashivim/vim-terraform'
+  use 'github/copilot.vim'
 
   use {
-    'williamboman/nvim-lsp-installer',
+    'williamboman/mason.nvim',
+    'williamboman/mason-lspconfig.nvim',
     'neovim/nvim-lspconfig'
   }
+
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = function()
+      local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+      ts_update()
+    end,
+  }
+
+  use {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    after = "nvim-treesitter",
+    requires = "nvim-treesitter/nvim-treesitter",
+  }
+
+  use {
+    "kylechui/nvim-surround",
+    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+    config = function()
+      require("nvim-surround").setup({
+        -- Configuration here, or leave empty to use defaults
+      })
+    end
+  }
+
+  use {'ms-jpq/coq.thirdparty', requires = {'ms-jpq/coq_nvim' } }
 
   use {
     'lewis6991/gitsigns.nvim',
@@ -46,4 +75,6 @@ return require('packer').startup(function()
   })
 
   use 'leafOfTree/vim-svelte-plugin'
+  use 'JohanBjoerklund/vim-colemak-dh'
+
 end)

@@ -23,6 +23,10 @@ function nmap(shortcut, command)
   map('n', shortcut, command)
 end
 
+function vmap(shortcut, command)
+  map('v', shortcut, command)
+end
+
 function imap(shortcut, command)
   map('i', shortcut, command)
 end
@@ -31,6 +35,9 @@ function xmap(shortcut, command)
   map('x', shortcut, command)
 end
 
+function omap(shortcut, command)
+  map('o', shortcut, command)
+end
 ----------------------------------------------------------------------------}}}
 
 -- Mappings ----------------------------------------------------------------{{{
@@ -42,6 +49,8 @@ nmap('<BS>', '<C-^>')
 nmap('<ESC>', ':noh<CR>')
 nmap('<leader>ev', ':vsplit $MYVIMRC<CR>')
 
+nmap('<leader>zi', ':Goyo<CR>') -- Buffer Zoom In
+nmap('<leader>zo', ':Goyo!<CR>') -- Buffer Zoom Out
 ----------------------------------------------------------------------------}}}
 
 -- GUI ---------------------------------------------------------------------{{{
@@ -60,6 +69,23 @@ vim.g.gruvbox_contrast_dark = 'hard'
 vim.g.gruvbox_sign_column = 'bg0'
 vim.cmd [[colorscheme gruvbox]]
 
+----------------------------------------------------------------------------}}}
+-- TreeSitter --------------------------------------------------------------{{{
+require'nvim-treesitter.configs'.setup {
+  auto_install = true,
+  highlight = {
+    enable = true
+  },
+  -- textobjects = {
+  --   select = {
+  --     enable = true,
+  --     lookahead = true,
+  --     keymaps = {
+        
+  --     }
+  --   }
+  -- }
+}
 ----------------------------------------------------------------------------}}}
 
 -- Folding -----------------------------------------------------------------}}}
@@ -95,95 +121,114 @@ end
 
 ----------------------------------------------------------------------------}}}
 
+-- Mason -------------------------------------------------------------------{{{
+require('mason').setup()
+require('mason-lspconfig').setup()
+----------------------------------------------------------------------------}}}
+
+-- Coq ---------------------------------------------------------------------{{{
+-- vim.g.coq_settings = {
+--  auto_start = true;
+-- }
+
+-- require('coq_3p') {
+--   { src = 'copilot', short_name = 'COP', accept_key = '<c-f>' }
+-- }
+-- }}}
 -- LSP ---------------------------------------------------------------------{{{
+
+local lsp = require 'lspconfig'
+-- local coq = require 'coq'
 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { noremap=true, silent=true })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { noremap=true, silent=true })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { noremap=true, silent=true })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap=true, silent=true })
 
-local on_attach = function(client, bufnr)
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  local opts = { noremap = true, silent = true, buffer=bufnr }
-  vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, opts)
-  vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, opts)
-  vim.keymap.set('n', '<leader>td', vim.lsp.buf.type_definition, opts)
-  vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, opts)
-  vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, opts)
-  vim.keymap.set('n', '<leader><C-K>', vim.lsp.buf.signature_help, opts)
-  vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
-  vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
-  vim.keymap.set('n', '<leader>wl', function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, opts)
-  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-  vim.keymap.set('n', '<leader><space>', vim.lsp.buf.code_action, opts)
-  vim.keymap.set('n', '<leader>fu', '<cmd>lua require("telescope.builtin").lsp_references()<CR>', opts)
-end
+-- local on_attach = function(client, bufnr)
+--   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+--   local opts = { noremap = true, silent = true, buffer=bufnr }
+--   vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, opts)
+--   vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, opts)
+--   vim.keymap.set('n', '<leader>td', vim.lsp.buf.type_definition, opts)
+--   vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, opts)
+--   vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, opts)
+--   vim.keymap.set('n', '<leader><C-K>', vim.lsp.buf.signature_help, opts)
+--   vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+--   vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+--   vim.keymap.set('n', '<leader>wl', function()
+--     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+--   end, opts)
+--   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+--   vim.keymap.set('n', '<leader><space>', vim.lsp.buf.code_action, opts)
+--   vim.keymap.set('n', '<leader>fu', '<cmd>lua require("telescope.builtin").lsp_references()<CR>', opts)
+-- end
 vim.cmd [[autocmd! ColorScheme * highlight NormalFloat guibg=#1f2335]]
 vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
 
-local eslint = {
-  lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
-  lintStdin = true,
-  lintFormats = {"%f:%l:%c: %m"},
-  lintIgnoreExitCode = true,
-  formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
-  formatStdin = true
-}
+vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
-require("nvim-lsp-installer").setup({
-  automatic_installation = true
-})
-
-require('lspconfig').tsserver.setup({
-  on_attach = function(client, bufnr)
-    on_attach(client, bufnr)
-
-    client.resolved_capabilities.document_formatting = false
-  end
-})
-
--- TODO: map keys or use omnisharp.vim
-require('lspconfig').omnisharp.setup({
-  root_dir = require('lspconfig/util').root_pattern('*.csproj'),
-  on_attach = function(client, bufnr)
-    on_attach(client, bufnr)
-  end
-})
-
-require('lspconfig').efm.setup({
-  root_dir = require('lspconfig/util').root_pattern('package.json', '.eslintrc', '.git'),
+-- lsp.tsserver.setup(coq.lsp_ensure_capabilities({
+lsp.tsserver.setup({
   settings = {
-    languages = {
-      javascript = { eslint },
-      javascriptreact = { eslint },
-      ['javascript.jsx'] = { eslint },
-      typescript = { eslint },
-      typescriptreact = { eslint },
-      ['typescript.tsx'] = { eslint }
+    typescript = {
+      updateImportsOnFileMove = {
+        enabled = 'always'
+      },
+      preferences = {
+        importModuleSpecifier = 'relative',
+        quoteStyle = 'single',
+
+      }
+    },
+    javascript = {
+      updateImportsOnFileMove = {
+        enabled = 'always'
+      },
+      preferences = {
+        importModuleSpecifier = 'relative',
+        quoteStyle = 'single',
+      }
     }
   },
-  filetypes = {
-      'javascript',
-      'javascriptreact',
-      'javascript.jsx',
-      'typescript',
-      'typescriptreact',
-      'typescript.tsx'
-  },
-  on_attach = function(client, bufnr)
-    on_attach(client, bufnr)
+  -- on_attach = function(client, bufnr)
+  --   on_attach(client, bufnr)
 
-    client.resolved_capabilities.document_formatting = true
-    client.resolved_capabilities.goto_defintion = false
-  end
+  --   client.server_capabilities.document_formatting = false
+  -- end
 })
 
-require('lspconfig').svelte.setup({
-  on_attach = on_attach,
+-- TODO: map keys or use omnisharp.vim, omnisharp_extend?
+-- lsp.omnisharp.setup(coq.lsp_ensure_capabilities({
+lsp.omnisharp.setup({
+  root_dir = require('lspconfig/util').root_pattern('*.csproj'),
+  -- on_attach = function(client, bufnr)
+  --   on_attach(client, bufnr)
+  -- end
 })
+
+lsp.eslint.setup({})
+
+lsp.jsonls.setup{}
+
+lsp.svelte.setup({
+  -- on_attach = on_attach,
+})
+
+lsp.terraformls.setup({
+  -- on_attach = on_attach,
+})
+
+-- lsp.jdtls.setup(coq.lsp_ensure_capabilities({ 
+lsp.jdtls.setup({ 
+  -- on_attach = on_attach 
+})
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+lsp.html.setup({})
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -193,28 +238,76 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   })
 
 vim.opt.updatetime = 2000
+
+autocmd('LspAttach' , {
+  group = augroup('UserLspConfig', {}),
+  callback = function(ev) 
+    vim.api.nvim_buf_set_option(ev.buf, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+    local opts = { noremap = true, silent = true, buffer=ev.buf }
+    vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', '<leader>td', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, opts)
+    vim.keymap.set('n', '<leader><C-K>', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<leader>wl', function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set('n', '<leader><space>', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', '<leader>fu', '<cmd>lua require("telescope.builtin").lsp_references()<CR>', opts)
+  end
+})
 ----------------------------------------------------------------------------}}}
 
 -- Vimspector --------------------------------------------------------------{{{
 
 nmap('<leader>dd', '<Plug>VimspectorLaunch')
-nmap('<leader>de', '<Plug>VimspectorReset')
+nmap('<leader>di', '<Plug>VimspectorBalloonEval')
+xmap('<leader>di', '<Plug>VimspectorBalloonEval')
+nmap('<leader>ds', '<Plug>VimspectorStop')
+xmap('<leader>ds', '<Plug>VimspectorStop')
 nmap('<leader>dc', '<Plug>VimspectorContinue')
 nmap('<leader>dt', '<Plug>VimspectorToggleBreakpoint')
 nmap('<leader>dtc', '<Plug>VimspectorToggleConditionalBreakpoint')
 nmap('<leader>dT', '<Plug>VimspectorClearBreakpoints')
-nmap('<leader>dk', '<Plug>VimspectorResart')
+nmap('<leader>dk', '<Plug>VimspectorRestart')
 nmap('<leader>doo', '<Plug>VimspectorStepOut')
 nmap('<leader>dsi', '<Plug>VimspectorStepInto')
 nmap('<leader>dso', '<Plug>VimspectorStepOver')
 nmap('<leader>di', '<Plug>VimspectorBalloonEval')
-xmap('<leader>di', '<Plug>VimspectorBalloonEval')
+nmap('<leader>dtl', '<Plug>VimspectorGoToCurrentLine')
 
 ----------------------------------------------------------------------------}}}
 
 -- Telescope ---------------------------------------------------------------{{{
 
 require('telescope').setup({
+  defaults = {
+    layout_strategy = 'vertical',
+    path_display = { 
+      tail = true
+      -- shorten = { len = 1, exclude = { 1, -1 } } 
+    },
+    layout_config = {
+      vertical = { 
+        winblend = 70,
+        width = 0.5,
+        prompt_position = 'top'
+      },
+      cursor = {
+        width = 0.5
+      },
+    },
+    mappings = {
+      i = {
+        ["<esc>"] = require("telescope.actions").close
+      },
+    },
+  },
   pickers = {
     find_files = {
       theme = 'dropdown'
@@ -225,17 +318,24 @@ require('telescope').setup({
     buffers = {
       theme = 'dropdown'
     },
+    marks = {
+      theme = 'dropdown'
+    },
+    live_grep = {
+      theme = 'dropdown'
+    },
     grep_string = {
-      theme = 'get_cursor'
+      theme = 'cursor'
     }
   }
 })
 
-nmap('<leader>f', ':lua require("telescope.builtin").find_files()<CR>')
+nmap('<leader>ff', ':lua require("telescope.builtin").find_files()<CR>')
 nmap('<leader>fg', ':lua require("telescope.builtin").live_grep()<CR>')
--- nmap('<leader>fg', ':lua require("telescope.builtin").grep_string()<CR>')
+nmap('<leader>fs', ':lua require("telescope.builtin").grep_string()<CR>')
 nmap('<leader>fb', ':lua require("telescope.builtin").buffers()<CR>')
 nmap('<leader>fh', ':lua require("telescope.builtin").help_tags()<CR>')
+nmap('<leader>fm', ':lua require("telescope.builtin").marks()<CR>')
 
 ----------------------------------------------------------------------------}}}
 
@@ -332,37 +432,24 @@ autocmd('BufLeave', {
   pattern = { '*.md', '*.markdown' },
   command = ':Goyo!'
 })
+autocmd('BufEnter', {
+  group = 'md',
+  pattern = { '*.md', '*.markdown' },
+  command = ':Limelight'
+})
+autocmd('BufLeave', {
+  group = 'md',
+  pattern = { '*.md', '*.markdown' },
+  command = ':Limelight!'
+})
 autocmd('User', {
   pattern = 'GoyoEnter',
   group = 'md',
-  command = ':Limelight'
-})
-autocmd('User', {
-  pattern = 'GoyoLeave',
-  group = 'md',
-  command = ':Limelight!'
+  callback = require("lualine").hide
 })
 
 ----------------------------------------------------------------------------}}}
 
--- Cursor ------------------------------------------------------------------{{{
-
--- vim.cmd [[set gcr=a:block]]
--- vim.cmd [[set gcr+=o:hor50-Cursor]]
--- vim.cmd [[set gcr+=n:Cursor]]
--- vim.cmd [[set gcr+=i-ci-sm:InsertCursor]]
--- vim.cmd [[set gcr+=r-cr:ReplaceCursor-hor20]]
--- vim.cmd [[set gcr+=c:CommandCursor]]
--- vim.cmd [[set gcr+=v-ve:VisualCursor]]
--- vim.cmd [[set gcr+=a:blinknon0]]
-
--- vim.cmd [[hi TermCursor ctermfg=03 ctermbg=07 guibg=#458588 guifg=#ebdbb2]]
--- vim.cmd [[hi Cursor ctermfg=03 ctermbg=07 guibg=#458588 guifg=#ebdbb2]]
--- vim.cmd [[hi iCursor ctermfg=15 ctermbg=04 guibg=#458588 guifg=#ebdbb2]]
--- vim.cmd [[hi InsertCursor ctermfg=15 ctermbg=04 guibg=#458588 guifg=#ebdbb2]]
--- vim.cmd [[hi vCursor ctermfg=15 ctermbg=16]]
--- vim.cmd [[hi VisualCursor ctermfg=15 ctermbg=16]]
--- vim.cmd [[hi CursorIM ctermfg=15 ctermbg=04]]
--- vim.cmd [[hi lCursor ctermfg=15 ctermbg=04]]
+-- Neosnippets -------------------------------------------------------------{{{
 
 ----------------------------------------------------------------------------}}}
