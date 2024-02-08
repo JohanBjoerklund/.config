@@ -126,15 +126,6 @@ require('mason').setup()
 require('mason-lspconfig').setup()
 ----------------------------------------------------------------------------}}}
 
--- Coq ---------------------------------------------------------------------{{{
--- vim.g.coq_settings = {
---  auto_start = true;
--- }
-
--- require('coq_3p') {
---   { src = 'copilot', short_name = 'COP', accept_key = '<c-f>' }
--- }
--- }}}
 -- LSP ---------------------------------------------------------------------{{{
 
 local lsp = require 'lspconfig'
@@ -145,32 +136,11 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { noremap=true, silent=true 
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { noremap=true, silent=true })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap=true, silent=true })
 
-
--- local on_attach = function(client, bufnr)
---   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
---   local opts = { noremap = true, silent = true, buffer=bufnr }
---   vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, opts)
---   vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, opts)
---   vim.keymap.set('n', '<leader>td', vim.lsp.buf.type_definition, opts)
---   vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, opts)
---   vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, opts)
---   vim.keymap.set('n', '<leader><C-K>', vim.lsp.buf.signature_help, opts)
---   vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
---   vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
---   vim.keymap.set('n', '<leader>wl', function()
---     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
---   end, opts)
---   vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
---   vim.keymap.set('n', '<leader><space>', vim.lsp.buf.code_action, opts)
---   vim.keymap.set('n', '<leader>fu', '<cmd>lua require("telescope.builtin").lsp_references()<CR>', opts)
--- end
 vim.cmd [[autocmd! ColorScheme * highlight NormalFloat guibg=#1f2335]]
 vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
 
 vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
--- lsp.tsserver.setup(coq.lsp_ensure_capabilities({
 lsp.tsserver.setup({
   settings = {
     typescript = {
@@ -201,34 +171,52 @@ lsp.tsserver.setup({
 })
 
 -- TODO: map keys or use omnisharp.vim, omnisharp_extend?
--- lsp.omnisharp.setup(coq.lsp_ensure_capabilities({
 lsp.omnisharp.setup({
-  root_dir = require('lspconfig/util').root_pattern('*.csproj'),
-  -- on_attach = function(client, bufnr)
-  --   on_attach(client, bufnr)
-  -- end
+  root_dir = require('lspconfig/util').root_pattern('*.csproj')
 })
 
 lsp.eslint.setup({})
 
 lsp.jsonls.setup{}
 
-lsp.svelte.setup({
-  -- on_attach = on_attach,
-})
+lsp.svelte.setup({})
 
-lsp.terraformls.setup({
-  -- on_attach = on_attach,
-})
+lsp.terraformls.setup({})
 
--- lsp.jdtls.setup(coq.lsp_ensure_capabilities({ 
-lsp.jdtls.setup({ 
-  -- on_attach = on_attach 
-})
+lsp.jdtls.setup({})
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 lsp.html.setup({})
+
+local prettier = require('efmls-configs.formatters.prettier')
+local languages = {
+  typescript = { prettier },
+  typescriptreact = { prettier },
+  javascript = { prettier },
+  javascriptreact = { prettier },
+}
+
+lsp.efm.setup(vim.tbl_extend(
+  'force',
+  {
+    filetypes = vim.tbl_keys(languages),
+    settings = {
+      rootMarkers = { '.git/' },
+      languages = languages,
+    },
+    init_options = {
+      documentFormatting = true,
+      documentRangeFormatting = true,
+    },
+  },
+  {
+    -- Pass your custom lsp config below like on_attach and capabilities
+    --
+    -- on_attach = on_attach,
+    -- capabilities = capabilities,
+  }))
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -238,6 +226,17 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   })
 
 vim.opt.updatetime = 2000
+
+local lsp_formatting = function(bufnr)
+    vim.lsp.buf.format({
+        filter = function(client)
+            return client.name == "efm"
+        end,
+        bufnr = bufnr,
+    })
+end
+
+local auLspFormatting = vim.api.nvim_create_augroup("LspFormatting", {})
 
 autocmd('LspAttach' , {
   group = augroup('UserLspConfig', {}),
@@ -259,6 +258,18 @@ autocmd('LspAttach' , {
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
     vim.keymap.set('n', '<leader><space>', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', '<leader>fu', '<cmd>lua require("telescope.builtin").lsp_references()<CR>', opts)
+
+    -- TODO: only add if .prettier file exists
+    -- if vim.lsp.get_client_by_id(ev.data.client_id).supports_method("textDocument/formatting") then
+    --     vim.api.nvim_clear_autocmds({ group = auLspFormatting, buffer = bufnr })
+    --     vim.api.nvim_create_autocmd("BufWritePre", {
+    --         group = auLspFormatting,
+    --         buffer = bufnr,
+    --         callback = function()
+    --             lsp_formatting(bufnr)
+    --         end,
+    --     })
+    -- end
   end
 })
 ----------------------------------------------------------------------------}}}

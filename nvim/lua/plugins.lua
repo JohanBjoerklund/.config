@@ -27,6 +27,12 @@ return require('packer').startup(function()
   }
 
   use {
+    'creativenull/efmls-configs-nvim',
+    tag = 'v1.*', -- tag is optional, but recommended
+    requires = { 'neovim/nvim-lspconfig' },
+  }
+
+  use {
     'nvim-treesitter/nvim-treesitter',
     run = function()
       local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
