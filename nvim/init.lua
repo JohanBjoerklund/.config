@@ -136,7 +136,6 @@ require('nvim-ts-autotag').setup()
 -- LSP ---------------------------------------------------------------------{{{
 
 local lsp = require 'lspconfig'
--- local coq = require 'coq'
 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { noremap=true, silent=true })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { noremap=true, silent=true })
@@ -189,6 +188,19 @@ lsp.svelte.setup({})
 lsp.terraformls.setup({})
 
 lsp.jdtls.setup({})
+
+lsp.tailwindcss.setup({
+  settings = {
+    tailwindCSS = {
+      experimental = {
+        classRegex = {
+          { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+          { "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" }
+        }
+      }
+    }
+  }
+})
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
