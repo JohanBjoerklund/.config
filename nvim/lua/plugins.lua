@@ -48,7 +48,6 @@ packer.init({
 return require('packer').startup(function()
 
   use 'wbthomason/packer.nvim'
-  use 'jiangmiao/auto-pairs'
   use 'tpope/vim-commentary'
   use 'tpope/vim-surround'
   use 'tpope/vim-fugitive'
@@ -59,6 +58,12 @@ return require('packer').startup(function()
   use 'nvim-lualine/lualine.nvim'
   use 'hashivim/vim-terraform'
   use 'github/copilot.vim'
+  use 'windwp/nvim-ts-autotag'
+
+  use {
+    'windwp/nvim-autopairs',
+    config = function() require('nvim-autopairs').setup {} end
+  }
 
   use {
     'williamboman/mason.nvim',
