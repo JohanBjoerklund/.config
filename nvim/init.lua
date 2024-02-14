@@ -155,7 +155,6 @@ lsp.tsserver.setup({
         enabled = 'always'
       },
       preferences = {
-        importModuleSpecifier = 'relative',
         quoteStyle = 'single',
 
       }
@@ -165,7 +164,6 @@ lsp.tsserver.setup({
         enabled = 'always'
       },
       preferences = {
-        importModuleSpecifier = 'relative',
         quoteStyle = 'single',
       }
     }
