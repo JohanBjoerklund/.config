@@ -1,0 +1,18 @@
+#!/bin/bash
+
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden'
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
+export FZF_CTRL_T_OPTS="--preview 'bat -n --color=always {}'"
+
+if ! [ -z "$TMUX" ]; then
+  export FZF_TMUX=1
+  export FZF_TMUX_OPTS='-p'
+fi
+
+_fzf_complete_git() {
+  _fzf_complete -- "$@" < <(
+    git --help -a | grep -E '^\s+' | awk '{print $1}'
+  )
+}
