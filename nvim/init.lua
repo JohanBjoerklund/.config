@@ -242,6 +242,36 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
     underline = true
   })
 
+require('sonarlint').setup({
+   server = {
+      cmd = {
+         'sonarlint-language-server',
+         -- Ensure that sonarlint-language-server uses stdio channel
+         '-stdio',
+         '-analyzers',
+         -- paths to the analyzers you need, using those for python and java in this example
+         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarhtml.jar"),
+         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjs.jar"),
+         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonariac.jar"),
+         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarlintomnisharp.jar"),
+      },
+      -- All settings are optional
+      settings = {
+         sonarlint = {
+            rules = {}
+         }
+      }
+   },
+   filetypes = {
+      'typescript',
+      'typescriptreact',
+      'javascript',
+      'javascriptreact',
+      'csharp',
+      'html',
+   }
+})
+
 vim.opt.updatetime = 2000
 
 local lsp_formatting = function(bufnr)

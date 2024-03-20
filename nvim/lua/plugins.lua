@@ -59,6 +59,7 @@ return require('packer').startup(function()
   use 'hashivim/vim-terraform'
   use 'github/copilot.vim'
   use 'windwp/nvim-ts-autotag'
+  use 'danarth/sonarlint.nvim'
 
   use {
     'windwp/nvim-autopairs',
