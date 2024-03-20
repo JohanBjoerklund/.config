@@ -323,21 +323,22 @@ autocmd('LspAttach' , {
 
 -- Vimspector --------------------------------------------------------------{{{
 
-nmap('<leader>dd', '<Plug>VimspectorLaunch')
-nmap('<leader>di', '<Plug>VimspectorBalloonEval')
-xmap('<leader>di', '<Plug>VimspectorBalloonEval')
-nmap('<leader>ds', '<Plug>VimspectorStop')
-xmap('<leader>ds', '<Plug>VimspectorStop')
-nmap('<leader>dc', '<Plug>VimspectorContinue')
-nmap('<leader>dt', '<Plug>VimspectorToggleBreakpoint')
-nmap('<leader>dtc', '<Plug>VimspectorToggleConditionalBreakpoint')
-nmap('<leader>dT', '<Plug>VimspectorClearBreakpoints')
-nmap('<leader>dk', '<Plug>VimspectorRestart')
-nmap('<leader>doo', '<Plug>VimspectorStepOut')
-nmap('<leader>dsi', '<Plug>VimspectorStepInto')
-nmap('<leader>dso', '<Plug>VimspectorStepOver')
-nmap('<leader>di', '<Plug>VimspectorBalloonEval')
-nmap('<leader>dtl', '<Plug>VimspectorGoToCurrentLine')
+nmap('<localleader>dl', '<Plug>VimspectorLaunch')
+nmap('<localleader>di', '<Plug>VimspectorBalloonEval')
+xmap('<localleader>di', '<Plug>VimspectorBalloonEval')
+nmap('<localleader>ds', '<Plug>VimspectorStop')
+xmap('<localleader>ds', '<Plug>VimspectorStop')
+nmap('<localleader>dc', '<Plug>VimspectorContinue')
+nmap('<localleader>dt', '<Plug>VimspectorToggleBreakpoint')
+nmap('<localleader>dtc', '<Plug>VimspectorToggleConditionalBreakpoint')
+nmap('<localleader>dT', '<Plug>VimspectorClearBreakpoints')
+nmap('<localleader>dk', '<Plug>VimspectorRestart')
+nmap('<localleader>doo', '<Plug>VimspectorStepOut')
+nmap('<localleader>dsi', '<Plug>VimspectorStepInto')
+nmap('<localleader>dso', '<Plug>VimspectorStepOver')
+nmap('<localleader>dtl', '<Plug>VimspectorGoToCurrentLine')
+nmap('<localleader>drc', '<Plug>VimspectorRunToCursor')
+nmap('<localleader>dq', ':call vimspector#Reset()<CR>')
 
 ----------------------------------------------------------------------------}}}
 
