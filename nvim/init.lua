@@ -76,9 +76,9 @@ require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true
   },
-  autotag = {
-    enable = true
-  }
+  -- autotag = {
+  --   enable = true
+  -- }
   -- textobjects = {
   --   select = {
   --     enable = true,
@@ -147,7 +147,7 @@ vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335
 
 vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
-lsp.tsserver.setup({
+lsp.ts_ls.setup({
   settings = {
     typescript = {
       updateImportsOnFileMove = {
