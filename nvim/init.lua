@@ -198,7 +198,12 @@ end
 
 -- Mason -------------------------------------------------------------------{{{
 require('mason').setup()
-require('mason-lspconfig').setup()
+require('mason-lspconfig').setup({
+  ensure_installed = {
+    'ts_ls'
+  },
+  automatic_installation = true
+})
 ----------------------------------------------------------------------------}}}
 
 -- nvim-ts-autotag ---------------------------------------------------------{{{
@@ -219,26 +224,26 @@ vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335
 
 vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
-lsp.tsserver.setup({
-  settings = {
-    typescript = {
-      updateImportsOnFileMove = {
-        enabled = 'always'
-      },
-      preferences = {
-        quoteStyle = 'single',
+lsp.ts_ls.setup({
+  -- settings = {
+  --   typescript = {
+  --     updateImportsOnFileMove = {
+  --       enabled = 'always'
+  --     },
+  --     preferences = {
+  --       quoteStyle = 'single',
 
-      }
-    },
-    javascript = {
-      updateImportsOnFileMove = {
-        enabled = 'always'
-      },
-      preferences = {
-        quoteStyle = 'single',
-      }
-    }
-  },
+  --     }
+  --   },
+  --   javascript = {
+  --     updateImportsOnFileMove = {
+  --       enabled = 'always'
+  --     },
+  --     preferences = {
+  --       quoteStyle = 'single',
+  --     }
+  --   }
+  -- },
   -- on_attach = function(client, bufnr)
   --   on_attach(client, bufnr)
 
@@ -279,13 +284,13 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 lsp.html.setup({})
 
-local prettier = require('efmls-configs.formatters.prettier')
-local languages = {
-  typescript = { prettier },
-  typescriptreact = { prettier },
-  javascript = { prettier },
-  javascriptreact = { prettier },
-}
+ local prettier = require('efmls-configs.formatters.prettier')
+ local languages = {
+   typescript = { prettier },
+   typescriptreact = { prettier },
+   javascript = { prettier },
+   javascriptreact = { prettier },
+ }
 
 lsp.efm.setup(vim.tbl_extend(
   'force',
@@ -361,18 +366,6 @@ autocmd('LspAttach' , {
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
     vim.keymap.set('n', '<leader><space>', vim.lsp.buf.code_action, opts)
     vim.keymap.set('n', '<leader>fu', '<cmd>lua require("telescope.builtin").lsp_references()<CR>', opts)
-
-    -- TODO: only add if .prettier file exists
-    -- if vim.lsp.get_client_by_id(ev.data.client_id).supports_method("textDocument/formatting") then
-    --     vim.api.nvim_clear_autocmds({ group = auLspFormatting, buffer = bufnr })
-    --     vim.api.nvim_create_autocmd("BufWritePre", {
-    --         group = auLspFormatting,
-    --         buffer = bufnr,
-    --         callback = function()
-    --             lsp_formatting(bufnr)
-    --         end,
-    --     })
-    -- end
   end
 })
 ----------------------------------------------------------------------------}}}
