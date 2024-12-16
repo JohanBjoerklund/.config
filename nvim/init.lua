@@ -406,6 +406,7 @@ require('telescope').setup({
         prompt_position = 'top'
       },
       cursor = {
+        layout_strategy = 'cursor',
         width = 0.5
       },
     },
@@ -432,7 +433,18 @@ require('telescope').setup({
       theme = 'dropdown'
     },
     grep_string = {
-      theme = 'cursor'
+      sorting_strategy = "ascending",
+      results_title = false,
+      layout_strategy = "cursor",
+      layout_config = {
+        width = 0.9,
+        height = 0.2,
+      },
+      borderchars = {
+        prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+        results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+        preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+      },
     }
   }
 })
