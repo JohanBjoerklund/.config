@@ -7,13 +7,6 @@ local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
 vim.cmd [[packadd packer.nvim]]
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost init.lua source <afile> | PackerCompile
-  augroup end
-]])
-
 
 function map(mode, shortcut, command)
   vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
@@ -228,12 +221,7 @@ lsp.efm.setup(vim.tbl_extend(
       documentRangeFormatting = true,
     },
   },
-  {
-    -- Pass your custom lsp config below like on_attach and capabilities
-    --
-    -- on_attach = on_attach,
-    -- capabilities = capabilities,
-  }))
+  {}))
 
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -273,17 +261,6 @@ require('sonarlint').setup({
 })
 
 vim.opt.updatetime = 2000
-
-local lsp_formatting = function(bufnr)
-    vim.lsp.buf.format({
-        filter = function(client)
-            return client.name == "efm"
-        end,
-        bufnr = bufnr,
-    })
-end
-
-local auLspFormatting = vim.api.nvim_create_augroup("LspFormatting", {})
 
 autocmd('LspAttach' , {
   group = augroup('UserLspConfig', {}),
@@ -349,7 +326,6 @@ require('telescope').setup({
     layout_strategy = 'vertical',
     path_display = { 
       tail = true
-      -- shorten = { len = 1, exclude = { 1, -1 } } 
     },
     layout_config = {
       vertical = { 

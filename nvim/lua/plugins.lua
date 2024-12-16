@@ -1,10 +1,3 @@
--- local fn = vim.fn
--- local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
-
--- if fn.empty(fn.glob(install_path)) > 0 then
---   packer_bootstrap = fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
--- end
-
 local fn = vim.fn
 
 -- Automatically install packer
@@ -102,8 +95,6 @@ return require('packer').startup(function()
     end
   }
 
-  use {'ms-jpq/coq.thirdparty', requires = {'ms-jpq/coq_nvim' } }
-
   use {
     'lewis6991/gitsigns.nvim',
     config = function() 
@@ -126,7 +117,6 @@ return require('packer').startup(function()
     run = function() vim.fn['mkdp#util#install']() end,
   })
 
-  use 'leafOfTree/vim-svelte-plugin'
   use 'JohanBjoerklund/vim-colemak-dh'
 
   -- Automatically set up your configuration after cloning packer.nvim
