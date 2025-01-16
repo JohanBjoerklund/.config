@@ -145,22 +145,6 @@ require'nvim-treesitter.configs'.setup {
   }
 }
 
-local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
-
--- Repeat movement with ; and ,
--- ensure ; goes forward and , goes backward regardless of the last direction
-vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move_next)
-vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_previous)
-
--- vim way: ; goes to the direction you were moving.
--- vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat_move.repeat_last_move)
--- vim.keymap.set({ "n", "x", "o" }, ",", ts_repeat_move.repeat_last_move_opposite)
-
--- Optionally, make builtin f, F, t, T also repeatable with ; and ,
-vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat_move.builtin_f_expr, { expr = true })
-vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat_move.builtin_F_expr, { expr = true })
-vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat_move.builtin_t_expr, { expr = true })
-vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat_move.builtin_T_expr, { expr = true })
 ----------------------------------------------------------------------------}}}
 
 -- Folding -----------------------------------------------------------------}}}
@@ -224,32 +208,7 @@ vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335
 
 vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
-lsp.ts_ls.setup({
-  -- settings = {
-  --   typescript = {
-  --     updateImportsOnFileMove = {
-  --       enabled = 'always'
-  --     },
-  --     preferences = {
-  --       quoteStyle = 'single',
-
-  --     }
-  --   },
-  --   javascript = {
-  --     updateImportsOnFileMove = {
-  --       enabled = 'always'
-  --     },
-  --     preferences = {
-  --       quoteStyle = 'single',
-  --     }
-  --   }
-  -- },
-  -- on_attach = function(client, bufnr)
-  --   on_attach(client, bufnr)
-
-  --   client.server_capabilities.document_formatting = false
-  -- end
-})
+lsp.ts_ls.setup({})
 
 -- TODO: map keys or use omnisharp.vim, omnisharp_extend?
 lsp.omnisharp.setup({
@@ -279,18 +238,15 @@ lsp.tailwindcss.setup({
   }
 })
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
 lsp.html.setup({})
 
- local prettier = require('efmls-configs.formatters.prettier')
- local languages = {
-   typescript = { prettier },
-   typescriptreact = { prettier },
-   javascript = { prettier },
-   javascriptreact = { prettier },
- }
+local prettier = require('efmls-configs.formatters.prettier')
+local languages = {
+  typescript = { prettier },
+  typescriptreact = { prettier },
+  javascript = { prettier },
+  javascriptreact = { prettier },
+}
 
 lsp.efm.setup(vim.tbl_extend(
   'force',
@@ -307,44 +263,37 @@ lsp.efm.setup(vim.tbl_extend(
   },
   {}))
 
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    signs = true,
-    virtual_text = false,
-    underline = true
-  })
+-- require('sonarlint').setup({
+--    server = {
+--       cmd = {
+--          'sonarlint-language-server',
+--          -- Ensure that sonarlint-language-server uses stdio channel
+--          '-stdio',
+--          '-analyzers',
+--          -- paths to the analyzers you need, using those for python and java in this example
+--          vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarhtml.jar"),
+--          vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjs.jar"),
+--          vim.fn.expand("$MASON/share/sonarlint-analyzers/sonariac.jar"),
+--          vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarlintomnisharp.jar"),
+--       },
+--       -- All settings are optional
+--       settings = {
+--          sonarlint = {
+--             rules = {}
+--          }
+--       }
+--    },
+--    filetypes = {
+--       'typescript',
+--       'typescriptreact',
+--       'javascript',
+--       'javascriptreact',
+--       'csharp',
+--       'html',
+--    }
+-- })
 
-require('sonarlint').setup({
-   server = {
-      cmd = {
-         'sonarlint-language-server',
-         -- Ensure that sonarlint-language-server uses stdio channel
-         '-stdio',
-         '-analyzers',
-         -- paths to the analyzers you need, using those for python and java in this example
-         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarhtml.jar"),
-         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarjs.jar"),
-         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonariac.jar"),
-         vim.fn.expand("$MASON/share/sonarlint-analyzers/sonarlintomnisharp.jar"),
-      },
-      -- All settings are optional
-      settings = {
-         sonarlint = {
-            rules = {}
-         }
-      }
-   },
-   filetypes = {
-      'typescript',
-      'typescriptreact',
-      'javascript',
-      'javascriptreact',
-      'csharp',
-      'html',
-   }
-})
-
-vim.opt.updatetime = 2000
+-- vim.opt.updatetime = 2000
 
 autocmd('LspAttach' , {
   group = augroup('UserLspConfig', {}),
