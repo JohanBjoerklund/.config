@@ -1,4 +1,5 @@
 require('plugins')
+
 -- Helpers -----------------------------------------------------------------{{{
 
 local set = vim.opt
@@ -61,6 +62,23 @@ vim.wo.cursorline = true
 vim.g.gruvbox_contrast_dark = 'hard'
 vim.g.gruvbox_sign_column = 'bg0'
 vim.cmd [[colorscheme gruvbox]]
+----------------------------------------------------------------------------}}}
+
+-- CopilotChat -------------------------------------------------------------{{{
+
+require('CopilotChat').setup({
+  window = {
+    layout = 'float',
+  },
+})
+
+local actions = require('CopilotChat.actions')
+local integrations = require('CopilotChat.integrations.telescope')
+
+vim.keymap.set({ 'n', 'v' }, '<leader>pp', function()
+  integrations.pick(actions.prompt_actions())
+end)
+
 ----------------------------------------------------------------------------}}}
 
 -- TreeSitter --------------------------------------------------------------{{{

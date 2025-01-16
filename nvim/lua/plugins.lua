@@ -54,6 +54,11 @@ return require('packer').startup(function()
   use 'danarth/sonarlint.nvim'
 
   use {
+    'CopilotC-Nvim/CopilotChat.nvim',
+    requires = { { 'nvim-lua/plenary.nvim' }, { 'github/copilot.vim'} }
+  }
+
+  use {
     'windwp/nvim-autopairs',
     config = function() require('nvim-autopairs').setup {} end
   }
