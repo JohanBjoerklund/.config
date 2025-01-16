@@ -424,9 +424,25 @@ require('telescope').setup({
         preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
       },
     }
+  },
+  extensions = {
+    cmdline = {
+      picker = {
+        layout_config = {
+          width = 120,
+          height = 25,
+        },
+      },
+      mappings = {
+        complete = '<Tab>',
+        run_selection = '<C-CR>',
+        run_input = '<CR>',
+      },
+    }
   }
 })
 
+vim.api.nvim_set_keymap('n', 'Q', ':Telescope cmdline<CR>', { noremap = true, desc = 'Cmdline' })
 nmap('<leader>ff', ':lua require("telescope.builtin").find_files()<CR>')
 nmap('<leader>fg', ':lua require("telescope.builtin").live_grep()<CR>')
 nmap('<leader>fs', ':lua require("telescope.builtin").grep_string()<CR>')

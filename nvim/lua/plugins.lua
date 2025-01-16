@@ -132,6 +132,11 @@ return require('packer').startup(function()
     requires = { {'nvim-lua/plenary.nvim'} }
   }
 
+  use {
+    'jonarrien/telescope-cmdline.nvim',
+    requires = { {'nvim-telescope/telescope.nvim'} }
+  }
+
   use({
     'iamcco/markdown-preview.nvim',
     run = function() vim.fn['mkdp#util#install']() end,
