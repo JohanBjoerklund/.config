@@ -45,6 +45,17 @@ nmap('<leader>ev', ':vsplit $MYVIMRC<CR>')
 
 nmap('<leader>zi', ':Goyo<CR>') -- Buffer Zoom In
 nmap('<leader>zo', ':Goyo!<CR>') -- Buffer Zoom Out
+
+-- Fix for colemak.vim keymap collision. tpope/vim-fugitive's maps y<C-G>
+-- and colemak.vim maps 'y' to 'w' (word). In combination this stalls 'y'
+-- because Vim must wait to see if the user wants to press <C-G> as well.
+augroup('RemoveFugitiveMappingForColemak', { clear = true })
+autocmd('BufEnter', { 
+  pattern = '*',
+  callback = function()
+    vim.api.nvim_buf_set_keymap(0, 'n', 'y<C-G>', '<silent> y<C-G>', { noremap = true })
+  end
+})
 ----------------------------------------------------------------------------}}}
 
 -- GUI ---------------------------------------------------------------------{{{
