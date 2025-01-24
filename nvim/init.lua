@@ -1,4 +1,4 @@
-require('plugins')
+require("config.lazy")
 
 -- Helpers -----------------------------------------------------------------{{{
 
@@ -6,8 +6,6 @@ local set = vim.opt
 local setlocal = vim.opt_local
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
-
-vim.cmd [[packadd packer.nvim]]
 
 function map(mode, shortcut, command)
   vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
@@ -35,9 +33,6 @@ end
 ----------------------------------------------------------------------------}}}
 
 -- Mappings ----------------------------------------------------------------{{{
-
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
 
 nmap('<BS>', '<C-^>')
 nmap('<ESC>', ':noh<CR>')
@@ -70,18 +65,7 @@ set.showbreak = '↳ '
 vim.wo.breakindent = true
 vim.wo.cursorline = true
 
-vim.g.gruvbox_contrast_dark = 'hard'
-vim.g.gruvbox_sign_column = 'bg0'
-vim.cmd [[colorscheme gruvbox]]
 ----------------------------------------------------------------------------}}}
-
--- CopilotChat -------------------------------------------------------------{{{
-
-require('CopilotChat').setup({
-  window = {
-    layout = 'float',
-  },
-})
 
 local actions = require('CopilotChat.actions')
 local integrations = require('CopilotChat.integrations.telescope')
@@ -90,91 +74,6 @@ vim.keymap.set({ 'n', 'v' }, '<leader>pp', function()
   integrations.pick(actions.prompt_actions())
 end)
 
-----------------------------------------------------------------------------}}}
-
--- TreeSitter --------------------------------------------------------------{{{
-require'nvim-treesitter.configs'.setup {
-  auto_install = true,
-  highlight = {
-    enable = true
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = '<C-s>',
-      node_incremental = '<C-s>',
-      node_decremental = '<bs>'
-    }
-  },
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ['a='] = { query = '@assignment.outer', desc = 'Select outer part of an assignment' },
-        ['i='] = { query = '@assignment.inner', desc = 'Select inner part of an assignment' },
-        ['l='] = { query = '@assignment.lhs', desc = 'Select left hand side of an assignment' },
-        ['r='] = { query = '@assignment.rhs', desc = 'Select right hand side of an assignment' },
-
-        ['aa'] = { query = '@parameter.outer', desc = 'Select outer part of a parameter/argument' },
-        ['ia'] = { query = '@parameter.inner', desc = 'Select inner part of a parameter/argument' },
-
-        ['ai'] = { query = '@conditional.outer', desc = 'Select outer part of a conditional' },
-        ['ii'] = { query = '@conditional.inner', desc = 'Select inner part of a conditional' },
-
-        ['al'] = { query = '@loop.outer', desc = 'Select outer part of a loop' },
-        ['il'] = { query = '@loop.inner', desc = 'Select inner part of a loop' },
-
-        ['af'] = { query = '@call.outer', desc = 'Select outer part of a function call' },
-        ['if'] = { query = '@call.inner', desc = 'Select inner part of a function call' },
-
-        ['am'] = { query = '@function.outer', desc = 'Select outer part of a function' },
-        ['im'] = { query = '@function.inner', desc = 'Select inner part of a function' },
-      }
-    },
-    swap = {
-      enable = true,
-      swap_next = {
-        ['<leader>na'] = '@parameter.inner',
-      },
-      swap_previous = {
-        ['<leader>pa'] = '@parameter.inner',
-      }
-    },
-    move = {
-      enable = true,
-      set_jumps = true, -- whether to set jumps in the jumplist
-      goto_next_start = {
-        ["]f"] = { query = "@call.outer", desc = "Next function call start" },
-        ["]m"] = { query = "@function.outer", desc = "Next method/function def start" },
-        ["]i"] = { query = "@conditional.outer", desc = "Next conditional start" },
-        ["]l"] = { query = "@loop.outer", desc = "Next loop start" },
-
-        ["]s"] = { query = "@local.scope", query_group = "locals", desc = "Next scope" },
-      },
-      goto_next_end = {
-        ["]F"] = { query = "@call.outer", desc = "Next function call end" },
-        ["]M"] = { query = "@function.outer", desc = "Next method/function def end" },
-        ["]I"] = { query = "@conditional.outer", desc = "Next conditional end" },
-        ["]L"] = { query = "@loop.outer", desc = "Next loop end" },
-      },
-      goto_previous_start = {
-        ["[f"] = { query = "@call.outer", desc = "Prev function call start" },
-        ["[m"] = { query = "@function.outer", desc = "Prev method/function def start" },
-        ["[i"] = { query = "@conditional.outer", desc = "Prev conditional start" },
-        ["[l"] = { query = "@loop.outer", desc = "Prev loop start" },
-      },
-      goto_previous_end = {
-        ["[F"] = { query = "@call.outer", desc = "Prev function call end" },
-        ["[M"] = { query = "@function.outer", desc = "Prev method/function def end" },
-        ["[I"] = { query = "@conditional.outer", desc = "Prev conditional end" },
-        ["[L"] = { query = "@loop.outer", desc = "Prev loop end" },
-      },
-    },
-  }
-}
-
-----------------------------------------------------------------------------}}}
 
 -- Folding -----------------------------------------------------------------}}}
 
@@ -209,88 +108,21 @@ end
 
 ----------------------------------------------------------------------------}}}
 
--- Mason -------------------------------------------------------------------{{{
-require('mason').setup()
-require('mason-lspconfig').setup({
-  ensure_installed = {
-    'ts_ls'
-  },
-  automatic_installation = true
-})
-----------------------------------------------------------------------------}}}
-
--- nvim-ts-autotag ---------------------------------------------------------{{{
-require('nvim-ts-autotag').setup()
-----------------------------------------------------------------------------}}}
 
 -- LSP ---------------------------------------------------------------------{{{
 
 local lsp = require 'lspconfig'
 
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { noremap=true, silent=true })
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { noremap=true, silent=true })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { noremap=true, silent=true })
+-- vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { noremap=true, silent=true })
+-- vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { noremap=true, silent=true })
 
-vim.cmd [[autocmd! ColorScheme * highlight NormalFloat guibg=#1f2335]]
-vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
+-- vim.cmd [[autocmd! ColorScheme * highlight NormalFloat guibg=#1f2335]]
+-- vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
 
-vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
+-- vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
-lsp.ts_ls.setup({})
-
--- TODO: map keys or use omnisharp.vim, omnisharp_extend?
-lsp.omnisharp.setup({
-  root_dir = require('lspconfig/util').root_pattern('*.csproj')
-})
-
-lsp.eslint.setup({})
-
-lsp.jsonls.setup{}
-
-lsp.svelte.setup({})
-
-lsp.terraformls.setup({})
-
-lsp.jdtls.setup({})
-
-lsp.tailwindcss.setup({
-  settings = {
-    tailwindCSS = {
-      experimental = {
-        classRegex = {
-          { "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-          { "cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)" }
-        }
-      }
-    }
-  }
-})
-
-lsp.html.setup({})
-
-local prettier = require('efmls-configs.formatters.prettier')
-local languages = {
-  typescript = { prettier },
-  typescriptreact = { prettier },
-  javascript = { prettier },
-  javascriptreact = { prettier },
-}
-
-lsp.efm.setup(vim.tbl_extend(
-  'force',
-  {
-    filetypes = vim.tbl_keys(languages),
-    settings = {
-      rootMarkers = { '.git/' },
-      languages = languages,
-    },
-    init_options = {
-      documentFormatting = true,
-      documentRangeFormatting = true,
-    },
-  },
-  {}))
 
 -- require('sonarlint').setup({
 --    server = {
@@ -324,28 +156,28 @@ lsp.efm.setup(vim.tbl_extend(
 
 -- vim.opt.updatetime = 2000
 
-autocmd('LspAttach' , {
-  group = augroup('UserLspConfig', {}),
-  callback = function(ev) 
-    vim.api.nvim_buf_set_option(ev.buf, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+-- autocmd('LspAttach' , {
+--   group = augroup('UserLspConfig', {}),
+--   callback = function(ev) 
+--     vim.api.nvim_buf_set_option(ev.buf, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-    local opts = { noremap = true, silent = true, buffer=ev.buf }
-    vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, opts)
-    vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, opts)
-    vim.keymap.set('n', '<leader>td', vim.lsp.buf.type_definition, opts)
-    vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, opts)
-    vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, opts)
-    vim.keymap.set('n', '<leader><C-K>', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
-    vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
-    vim.keymap.set('n', '<leader>wl', function()
-      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, opts)
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-    vim.keymap.set('n', '<leader><space>', vim.lsp.buf.code_action, opts)
-    vim.keymap.set('n', '<leader>fu', '<cmd>lua require("telescope.builtin").lsp_references()<CR>', opts)
-  end
-})
+--     local opts = { noremap = true, silent = true, buffer=ev.buf }
+--     vim.keymap.set('n', '<leader>gD', vim.lsp.buf.declaration, opts)
+--     vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, opts)
+--     vim.keymap.set('n', '<leader>td', vim.lsp.buf.type_definition, opts)
+--     vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, opts)
+--     vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, opts)
+--     vim.keymap.set('n', '<leader><C-K>', vim.lsp.buf.signature_help, opts)
+--     vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
+--     vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
+--     vim.keymap.set('n', '<leader>wl', function()
+--       print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+--     end, opts)
+--     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
+--     vim.keymap.set('n', '<leader><space>', vim.lsp.buf.code_action, opts)
+--     vim.keymap.set('n', '<leader>fu', '<cmd>lua require("telescope.builtin").lsp_references()<CR>', opts)
+--   end
+-- })
 ----------------------------------------------------------------------------}}}
 
 -- Vimspector --------------------------------------------------------------{{{
@@ -371,76 +203,6 @@ nmap('<localleader>dq', ':call vimspector#Reset()<CR>')
 
 -- Telescope ---------------------------------------------------------------{{{
 
-require('telescope').setup({
-  defaults = {
-    layout_strategy = 'vertical',
-    path_display = { 
-      tail = true
-    },
-    layout_config = {
-      vertical = { 
-        winblend = 70,
-        width = 0.5,
-        prompt_position = 'top'
-      },
-      cursor = {
-        layout_strategy = 'cursor',
-        width = 0.5
-      },
-    },
-    mappings = {
-      i = {
-        ["<esc>"] = require("telescope.actions").close
-      },
-    },
-  },
-  pickers = {
-    find_files = {
-      theme = 'dropdown'
-    },
-    lsp_references = {
-      theme = 'dropdown'
-    },
-    buffers = {
-      theme = 'dropdown'
-    },
-    marks = {
-      theme = 'dropdown'
-    },
-    live_grep = {
-      theme = 'dropdown'
-    },
-    grep_string = {
-      sorting_strategy = "ascending",
-      results_title = false,
-      layout_strategy = "cursor",
-      layout_config = {
-        width = 0.9,
-        height = 0.2,
-      },
-      borderchars = {
-        prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
-        results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-        preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
-      },
-    }
-  },
-  extensions = {
-    cmdline = {
-      picker = {
-        layout_config = {
-          width = 120,
-          height = 25,
-        },
-      },
-      mappings = {
-        complete = '<Tab>',
-        run_selection = '<C-CR>',
-        run_input = '<CR>',
-      },
-    }
-  }
-})
 
 vim.api.nvim_set_keymap('n', 'Q', ':Telescope cmdline<CR>', { noremap = true, desc = 'Cmdline' })
 nmap('<leader>ff', ':lua require("telescope.builtin").find_files()<CR>')
@@ -452,44 +214,6 @@ nmap('<leader>fm', ':lua require("telescope.builtin").marks()<CR>')
 
 ----------------------------------------------------------------------------}}}
 
--- Lualine -----------------------------------------------------------------{{{
-
-require('lualine').setup({
-  options = {
-    theme = 'gruvbox'
-  },
-  sections = {
-    lualine_a = {},
-    lualine_b = { 
-      'branch',
-      'diff',
-      { 
-        'diagnostics',
-        enable_icons = false,
-        symbols = { 
-          error = '✘',
-          warn = '✘',
-          info = '‼',
-          hint = '‼',
-        }
-      } 
-    },
-    lualine_c = { 'filename' },
-    lualine_x = {},
-    lualine_y = {},
-    lualine_z = { 'winnr' }
-  },
-  inactive_sections = {
-    lualine_a = { 'filename' },
-    lualine_b = {},
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {},
-    lualine_z = { 'winnr' }
-  }
-})
-
-----------------------------------------------------------------------------}}}
 
 -- Navigation --------------------------------------------------------------{{{
 
@@ -560,9 +284,5 @@ autocmd('User', {
   group = 'md',
   callback = require("lualine").hide
 })
-
-----------------------------------------------------------------------------}}}
-
--- Neosnippets -------------------------------------------------------------{{{
 
 ----------------------------------------------------------------------------}}}
