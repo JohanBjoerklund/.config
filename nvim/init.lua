@@ -111,7 +111,7 @@ end
 
 -- LSP ---------------------------------------------------------------------{{{
 
-local lsp = require 'lspconfig'
+-- local lsp = require 'lspconfig'
 
 -- vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { noremap=true, silent=true })
 -- vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { noremap=true, silent=true })
@@ -178,27 +178,6 @@ local lsp = require 'lspconfig'
 --     vim.keymap.set('n', '<leader>fu', '<cmd>lua require("telescope.builtin").lsp_references()<CR>', opts)
 --   end
 -- })
-----------------------------------------------------------------------------}}}
-
--- Vimspector --------------------------------------------------------------{{{
-
-nmap('<localleader>dl', '<Plug>VimspectorLaunch')
-nmap('<localleader>di', '<Plug>VimspectorBalloonEval')
-xmap('<localleader>di', '<Plug>VimspectorBalloonEval')
-nmap('<localleader>ds', '<Plug>VimspectorStop')
-xmap('<localleader>ds', '<Plug>VimspectorStop')
-nmap('<localleader>dc', '<Plug>VimspectorContinue')
-nmap('<localleader>dt', '<Plug>VimspectorToggleBreakpoint')
-nmap('<localleader>dtc', '<Plug>VimspectorToggleConditionalBreakpoint')
-nmap('<localleader>dT', '<Plug>VimspectorClearBreakpoints')
-nmap('<localleader>dk', '<Plug>VimspectorRestart')
-nmap('<localleader>doo', '<Plug>VimspectorStepOut')
-nmap('<localleader>dsi', '<Plug>VimspectorStepInto')
-nmap('<localleader>dso', '<Plug>VimspectorStepOver')
-nmap('<localleader>dtl', '<Plug>VimspectorGoToCurrentLine')
-nmap('<localleader>drc', '<Plug>VimspectorRunToCursor')
-nmap('<localleader>dq', ':call vimspector#Reset()<CR>')
-
 ----------------------------------------------------------------------------}}}
 
 -- Telescope ---------------------------------------------------------------{{{
