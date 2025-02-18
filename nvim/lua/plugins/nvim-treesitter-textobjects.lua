@@ -3,7 +3,6 @@ return {
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
   },
-  lazy = true,
   config = function()
     require('nvim-treesitter.configs').setup({
       textobjects = {
