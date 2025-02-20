@@ -1,46 +1,16 @@
 require("config.settings")
 require("config.lazy")
+require("config.keymaps")
 
 -- Helpers -----------------------------------------------------------------{{{
 
-local set = vim.opt
 local setlocal = vim.opt_local
 local autocmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
-function map(mode, shortcut, command)
-  vim.api.nvim_set_keymap(mode, shortcut, command, { noremap = true, silent = true })
-end
-
-function nmap(shortcut, command)
-  map('n', shortcut, command)
-end
-
-function vmap(shortcut, command)
-  map('v', shortcut, command)
-end
-
-function imap(shortcut, command)
-  map('i', shortcut, command)
-end
-
-function xmap(shortcut, command)
-  map('x', shortcut, command)
-end
-
-function omap(shortcut, command)
-  map('o', shortcut, command)
-end
 ----------------------------------------------------------------------------}}}
 
 -- Mappings ----------------------------------------------------------------{{{
-
-nmap('<BS>', '<C-^>')
-nmap('<ESC>', ':noh<CR>')
-nmap('<leader>ev', ':vsplit $MYVIMRC<CR>')
-
-nmap('<leader>zi', ':Goyo<CR>') -- Buffer Zoom In
-nmap('<leader>zo', ':Goyo!<CR>') -- Buffer Zoom Out
 
 -- Fix for colemak.vim keymap collision. tpope/vim-fugitive's maps y<C-G>
 -- and colemak.vim maps 'y' to 'w' (word). In combination this stalls 'y'
@@ -53,28 +23,6 @@ autocmd('BufEnter', {
   end
 })
 ----------------------------------------------------------------------------}}}
-
--- GUI ---------------------------------------------------------------------{{{
-set.completeopt = 'longest,menuone'
-set.termguicolors = true
-set.relativenumber = true
-set.number = true
-set.showmode = false
-set.colorcolumn = '80'
-set.signcolumn = 'yes'
-set.showbreak = '↳ ' 
-vim.wo.breakindent = true
-vim.wo.cursorline = true
-
-----------------------------------------------------------------------------}}}
-
-local actions = require('CopilotChat.actions')
-local integrations = require('CopilotChat.integrations.telescope')
-
-vim.keymap.set({ 'n', 'v' }, '<leader>pp', function()
-  integrations.pick(actions.prompt_actions())
-end)
-
 
 -- Folding -----------------------------------------------------------------}}}
 
@@ -162,32 +110,6 @@ autocmd('FileType', {
 -- })
 ----------------------------------------------------------------------------}}}
 
--- Telescope ---------------------------------------------------------------{{{
-
-
-vim.api.nvim_set_keymap('n', 'Q', ':Telescope cmdline<CR>', { noremap = true, desc = 'Cmdline' })
-nmap('<leader>ff', ':lua require("telescope.builtin").find_files()<CR>')
-nmap('<leader>fg', ':lua require("telescope.builtin").live_grep()<CR>')
-nmap('<leader>fs', ':lua require("telescope.builtin").grep_string()<CR>')
-nmap('<leader>fb', ':lua require("telescope.builtin").buffers()<CR>')
-nmap('<leader>fh', ':lua require("telescope.builtin").help_tags()<CR>')
-nmap('<leader>fm', ':lua require("telescope.builtin").marks()<CR>')
-
-----------------------------------------------------------------------------}}}
-
-
--- Navigation --------------------------------------------------------------{{{
-
-local winnr = 1
-while(winnr <= 9)
-do
-  nmap('<leader>'..winnr, ':'..winnr..'wincmd w<CR>')
-  winnr = winnr + 1
-end
-
-----------------------------------------------------------------------------}}}
-
-
 -- HTML --------------------------------------------------------------------{{{
 
 augroup('html', { clear = true })
@@ -245,5 +167,8 @@ autocmd('User', {
   group = 'md',
   callback = require("lualine").hide
 })
+
+vim.api.nvim_set_keymap('n', '<leader>zi', ':Goyo<CR>', { noremap = true, silent = true }) -- Buffer Zoom In
+vim.api.nvim_set_keymap('n', '<leader>zo', ':Goyo!<CR>', { noremap = true, silent = true }) -- Buffer Zoom Out
 
 ----------------------------------------------------------------------------}}}
