@@ -1,3 +1,4 @@
+require("config.settings")
 require("config.lazy")
 
 -- Helpers -----------------------------------------------------------------{{{
@@ -87,27 +88,8 @@ autocmd('FileType', {
     vim.api.nvim_buf_set_keymap(opts.buf, 'n', '<leader>s', ':w | source %')
   end
 })
-set.foldenable = false
-set.foldnestmax = 1
-set.foldmethod = 'indent'
 
 ----------------------------------------------------------------------------}}}
-
--- Misc --------------------------------------------------------------------}}}
-
-set.autoread = true
-set.shiftwidth = 2
-set.softtabstop = 2
-set.copyindent = true
-set.swapfile = false
-set.expandtab = true
-
-if vim.fn.executable('rg') then
-  set.grepprg='rg --no-heading --smart-case --color=never'
-end
-
-----------------------------------------------------------------------------}}}
-
 
 -- LSP ---------------------------------------------------------------------{{{
 
