@@ -26,10 +26,12 @@ return {
     },
     pickers = {
       find_files = {
-        theme = 'dropdown'
+        theme = 'dropdown',
+        path_display = { 'filename_first' }
       },
       lsp_references = {
-        theme = 'dropdown'
+        theme = 'dropdown',
+        path_display = { 'filename_first' }
       },
       buffers = {
         theme = 'dropdown'
@@ -38,7 +40,8 @@ return {
         theme = 'dropdown'
       },
       live_grep = {
-        theme = 'dropdown'
+        theme = 'dropdown',
+        path_display = { 'filename_first' }
       },
       grep_string = {
         sorting_strategy = "ascending",
