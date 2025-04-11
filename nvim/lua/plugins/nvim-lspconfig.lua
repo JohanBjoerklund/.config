@@ -24,6 +24,8 @@ return {
       root_dir = require('lspconfig/util').root_pattern('*.csproj')
     })
 
+    lsp.dockerls.setup({})
+
     lsp.eslint.setup({})
 
     lsp.jsonls.setup{}
