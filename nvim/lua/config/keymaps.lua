@@ -38,6 +38,9 @@ nmap('<leader>fs', ':lua require("telescope.builtin").grep_string()<CR>')
 nmap('<leader>fb', ':lua require("telescope.builtin").buffers()<CR>')
 nmap('<leader>fh', ':lua require("telescope.builtin").help_tags()<CR>')
 nmap('<leader>fm', ':lua require("telescope.builtin").marks()<CR>')
+nmap('<leader>gf', ':lua require("telescope.builtin").git_bcommits()<CR>')
+vmap('<leader>gf', ':lua require("telescope.builtin").git_bcommits_range()<CR>')
+nmap('<leader>gF', ':lua require("telescope.builtin").git_commits()<CR>')
 
 -- Colemak-DH
 
