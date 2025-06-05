@@ -3,7 +3,6 @@ return {
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     local lsp = require('lspconfig')
-    local mason = require('mason')
 
     vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { noremap=true, silent=true })
     vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { noremap=true, silent=true })
@@ -14,8 +13,6 @@ return {
     vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
 
     vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
-
-    mason.setup({})
 
     lsp.ts_ls.setup({})
 
@@ -87,7 +84,10 @@ return {
           vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, opts)
           vim.keymap.set('n', '<leader>td', vim.lsp.buf.type_definition, opts)
           vim.keymap.set('n', '<leader>K', vim.lsp.buf.hover, opts)
+
           vim.keymap.set('n', '<leader>gi', vim.lsp.buf.implementation, opts)
+          -- TODO: what shortcut?
+          -- vim.keymap.set('n', '<leader>', '<cmd>lua require("telescope.builtin").lsp_diagnostics()<CR>', opts)
           vim.keymap.set('n', '<leader><C-K>', vim.lsp.buf.signature_help, opts)
           vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder, opts)
           vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder, opts)
