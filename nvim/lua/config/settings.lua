@@ -3,7 +3,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- GUI
-vim.opt.completeopt = "menuone,noselect"
+vim.opt.completeopt = {"menuone", "noselect", "popup" }
 vim.opt.termguicolors = true
 vim.opt.relativenumber = true
 vim.opt.number = true
