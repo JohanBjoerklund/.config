@@ -74,4 +74,15 @@ return {
       }
     }
   },
+  keys = {
+    { '<leader>ff', '<cmd>Telescope find_files<cr>', desc = '[F]ind [F]iles' },
+    { '<leader>fg', '<cmd>Telescope live_grep<cr>', desc = '[F]ind with [G]rep' },
+    { '<leader>fs', '<cmd>Telescope grep_string<cr>', desc = '[F]ind [S]tring with grep' },
+    { '<leader>fb', '<cmd>Telescope buffers<cr>', desc = '[F]ind [B]uffers' },
+    { '<leader>fh', '<cmd>Telescope help_tags<cr>', desc = '[F]ind [H]elp Tags' },
+    { '<leader>fm', '<cmd>Telescope marks<cr>', desc = '[F]ind [M]arks' },
+    { '<leader>gc', '<cmd>Telescope git_bcommits<cr>', desc = '[G]it Buffer [C]ommits' },
+    { '<leader>gC', '<cmd>Telescope git_commits<cr>', desc = '[G]it [C]ommits' },
+    { 'Q', '<cmd>Telescope cmdline<cr>', desc = 'Command Line'},
+  }
 }
