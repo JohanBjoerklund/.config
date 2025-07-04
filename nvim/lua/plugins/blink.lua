@@ -35,6 +35,14 @@ return {
 
     -- (Default) Only show the documentation popup when manually triggered
     completion = { 
+      menu = {
+        border = 'rounded',
+        -- winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,CursorLine:BlinkCmpDocCursorLine,Search:None'
+        winhighlight = 'Normal:Normal,FloatBorder:Normal,CursorLine:BlinkCmpDocCursorLine,Search:None'
+      },
+      documentation = {
+        border = 'rounded',
+      },
       accept = {
         auto_brackets = { enabled = true },
       },
