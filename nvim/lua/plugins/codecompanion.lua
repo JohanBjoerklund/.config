@@ -31,7 +31,7 @@ return {
     },
   },
   keys = {
-    {'<leader>cp', '<cmd>CodeCompanion<cr>', desc = 'AI [P]rompt'},
+    {'<leader>ca', '<cmd>CodeCompanionAction<cr>', desc = 'AI [A]ction'},
     {'<leader>cs', '<cmd>CodeCompanionChat<cr>', desc = 'AI [S]tart'},
     {
       '<leader>cc',
