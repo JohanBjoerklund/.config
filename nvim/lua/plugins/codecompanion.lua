@@ -29,6 +29,14 @@ return {
         },  
       },
     },
+    strategies = {
+      chat = {
+        adapter = {
+          name = 'copilot',
+          model = 'claude-sonnet-4',
+        },
+      },
+    },
   },
   keys = {
     {'<leader>ca', '<cmd>CodeCompanionAction<cr>', desc = 'AI [A]ction'},
