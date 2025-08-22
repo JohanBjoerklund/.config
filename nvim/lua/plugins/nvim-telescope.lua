@@ -77,12 +77,16 @@ return {
   keys = {
     { '<leader>ff', '<cmd>Telescope find_files<cr>', desc = '[F]ind [F]iles' },
     { '<leader>fg', '<cmd>Telescope live_grep<cr>', desc = '[F]ind with [G]rep' },
+    { '<leader>fib', '<cmd>Telescope current_buffer_fuzzy_find<cr>', desc = '[F]ind [I]n current [B]uffer' },
     { '<leader>fs', '<cmd>Telescope grep_string<cr>', desc = '[F]ind [S]tring with grep' },
     { '<leader>fb', '<cmd>Telescope buffers<cr>', desc = '[F]ind [B]uffers' },
     { '<leader>fh', '<cmd>Telescope help_tags<cr>', desc = '[F]ind [H]elp Tags' },
     { '<leader>fm', '<cmd>Telescope marks<cr>', desc = '[F]ind [M]arks' },
+    { '<leader>fws', '<cmd>Telescope lsp_workspace_symbols<cr>', desc = '[F]ind [W]orkspace [S]ymbols' },
     { '<leader>gc', '<cmd>Telescope git_bcommits<cr>', desc = '[G]it Buffer [C]ommits' },
     { '<leader>gC', '<cmd>Telescope git_commits<cr>', desc = '[G]it [C]ommits' },
     { 'Q', '<cmd>Telescope cmdline<cr>', desc = 'Command Line'},
+    { '<leader>jl', '<cmd>Telescope jumplist<cr>', desc = '[J]ump [L]ist' },
+    { '<leader>le', '<cmd>Telescope diagnostics<cr>', desc = '[L]ist [E]rrors' },
   }
 }
