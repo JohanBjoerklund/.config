@@ -67,5 +67,6 @@ return {
     {'nvim-treesitter/nvim-treesitter'},
     {'ravitemer/mcphub.nvim'},
     {'echasnovski/mini.diff', opts = {}},
+    {'franco-ruggeri/codecompanion-spinner.nvim'}
   }
 }
