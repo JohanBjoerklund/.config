@@ -88,5 +88,7 @@ return {
     { 'Q', '<cmd>Telescope cmdline<cr>', desc = 'Command Line'},
     { '<leader>jl', '<cmd>Telescope jumplist<cr>', desc = '[J]ump [L]ist' },
     { '<leader>le', '<cmd>Telescope diagnostics<cr>', desc = '[L]ist [E]rrors' },
+    { '<leader>qf', '<cmd>Telescope quickfixs<cr>', desc = '[Q]ick [F]ix' },
+    { '<leader>qfh', '<cmd>Telescope quickfixhistory<cr>', desc = '[Q]ick [F]ix [H]istory' },
   }
 }
