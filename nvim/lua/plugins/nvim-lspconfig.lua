@@ -2,7 +2,6 @@ return {
   'neovim/nvim-lspconfig',
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
-    local lsp = require('lspconfig')
 
     vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { noremap=true, silent=true })
     vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { noremap=true, silent=true })
@@ -14,26 +13,29 @@ return {
 
     vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
 
-    lsp.ts_ls.setup({})
+    vim.lsp.enable('ts_ls', {})
 
     -- TODO: map keys or use omnisharp.vim, omnisharp_extend?
-    lsp.omnisharp.setup({
+    vim.lsp.enable('omnisharp', {
       root_dir = require('lspconfig/util').root_pattern('*.csproj')
     })
 
-    lsp.dockerls.setup({})
+    vim.lsp.enable('dockerls', {})
 
-    lsp.eslint.setup({})
+    vim.lsp.enable('eslint', { 
+      experimental = { useFlatConfig = true},
+      root_dir = require('lspconfig/util').root_pattern('package.json')
+    })
 
-    lsp.jsonls.setup{}
+    vim.lsp.enable('jsonls', {})
 
-    lsp.svelte.setup({})
+    vim.lsp.enable('svelte', {})
 
-    lsp.terraformls.setup({})
+    vim.lsp.enable('terraformls', {})
 
-    lsp.jdtls.setup({})
+    vim.lsp.enable('jdtls', {})
 
-    lsp.tailwindcss.setup({
+    vim.lsp.enable('tailwindcss', {
       settings = {
         tailwindCSS = {
           experimental = {
@@ -46,7 +48,7 @@ return {
       }
     })
 
-    lsp.html.setup({})
+    vim.lsp.enable('html', {})
 
     local prettier = require('efmls-configs.formatters.prettier')
     local languages = {
@@ -56,7 +58,7 @@ return {
       javascriptreact = { prettier },
     }
 
-    lsp.efm.setup(vim.tbl_extend(
+    vim.lsp.enable('efm', vim.tbl_extend(
       'force',
       {
         filetypes = vim.tbl_keys(languages),
