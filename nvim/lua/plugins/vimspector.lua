@@ -1,6 +1,7 @@
 return {
   'puremourning/vimspector',
   build = ':VimspectorInstall vscode-node-debug2 netcoredbg',
+  enabled = false,
   keys = {
     {
       '<localleader>dl',
