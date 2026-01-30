@@ -52,20 +52,30 @@ return {
       },
     }
 
-    local map = vim.keymap.set
+    -- local map = vim.keymap.set
 
-    local opts = { noremap = true, silent = true }
+    -- local opts = { noremap = true, silent = true }
 
-    map("n", "<F5>", "<Cmd>lua require'dap'.continue()<CR>", opts)
-    map("n", "<F6>", "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>", opts)
-    map("n", "<F9>", "<Cmd>lua require'dap'.toggle_breakpoint()<CR>", opts)
-    map("n", "<F10>", "<Cmd>lua require'dap'.step_over()<CR>", opts)
-    map("n", "<F11>", "<Cmd>lua require'dap'.step_into()<CR>", opts)
-    map("n", "<F8>", "<Cmd>lua require'dap'.step_out()<CR>", opts)
-    -- map("n", "<F12>", "<Cmd>lua require'dap'.step_out()<CR>", opts)
-    map("n", "<leader>dr", "<Cmd>lua require'dap'.repl.open()<CR>", opts)
-    map("n", "<leader>dl", "<Cmd>lua require'dap'.run_last()<CR>", opts)
-    map("n", "<leader>dt", "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>",
-    { noremap = true, silent = true, desc = 'debug nearest test' })
-  end
+    -- map("n", "<F5>", "<Cmd>lua require'dap'.continue()<CR>", opts)
+    -- map("n", "<F6>", "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>", opts)
+    -- map("n", "<F9>", "<Cmd>lua require'dap'.toggle_breakpoint()<CR>", opts)
+    -- map("n", "<F10>", "<Cmd>lua require'dap'.step_over()<CR>", opts)
+    -- map("n", "<F11>", "<Cmd>lua require'dap'.step_into()<CR>", opts)
+    -- map("n", "<F8>", "<Cmd>lua require'dap'.step_out()<CR>", opts)
+    -- -- map("n", "<F12>", "<Cmd>lua require'dap'.step_out()<CR>", opts)
+    -- map("n", "<leader>dr", "<Cmd>lua require'dap'.repl.open()<CR>", opts)
+    -- map("n", "<leader>dl", "<Cmd>lua require'dap'.run_last()<CR>", opts)
+    -- map("n", "<leader>dt", "<Cmd>lua require('neotest').run.run({strategy = 'dap'})<CR>",
+    -- { noremap = true, silent = true, desc = 'debug nearest test' })
+  end,
+  keys = {
+    { "<F5>", "<cmd>lua require'dap'.continue()<cr>", desc = "DAP: Continue" },
+    { "<F6>", "<Cmd>lua require'neotest'.run.run({strategy = 'dap'})<CR>", desc = "DAP: Debug Nearest Test" },
+    { "<F9>", "<cmd>lua require'dap'.toggle_breakpoint()<cr>", desc = "DAP: Toggle Breakpoint" },
+    { "<F10>", "<cmd>lua require'dap'.step_over()<cr>", desc = "DAP: Step Over" },
+    { "<F11>", "<cmd>lua require'dap'.step_into()<cr>", desc = "DAP: Step Into" },
+    { "<F8>", "<cmd>lua require'dap'.step_out()<cr", desc = "DAP: Step Out" },
+    { "<leader>dr", "<cmd>lua require'dap'.repl.open()<cr>", desc = "DAP: Open REPL" },
+    { "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>", desc = "DAP: Run Last" },
+  },
 }
